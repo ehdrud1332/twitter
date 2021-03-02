@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import {authService} from "../fbase";
 
 export default () => {
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [newAccount, setNewAccount] = useState(true);
+    const [error, setError] = useState("");
 
     const onChange = (event) => {
         const {target: {name, value}} = event;
@@ -14,16 +17,36 @@ export default () => {
         }
     }
 
-    const onSubmit = (event) => {
+    // preventDefault는 기본 행위가 실행되는 걸 원치 않는다는 것.
+    const onSubmit = async (event) => {
         event.preventDefault();
+        try {
+            let data
+            if(newAccount) {
+                data = await authService.createUserWithEmailAndPassword(
+                    email, password
+                )
+            } else {
+                  data = await authService.signInWithEmailAndPassword(
+                    email, password
+                )
+            }
+            console.log(data)
+
+        } catch (error) {
+            setError(error.message)
+        }
+
     }
+
+    const toggleAccount = () => setNewAccount((prev) => !prev)
 
     return (
         <div>
             <form onSubmit={onSubmit}>
                 <input
                     name='email'
-                    type='text'
+                    type='email'
                     placeholder='Email'
                     required
                     value={email}
@@ -38,8 +61,12 @@ export default () => {
                     onChange={onChange}
                 />
 
-                <input type='submit' value='Login' />
+                <input type='submit' value={newAccount ? "Create Account" : 'Sign In'} />
+                {error}
             </form>
+            <span onClick={toggleAccount}>
+                {newAccount ? "Sign In" : "Create Account"}
+            </span>
             <div>
                 <button>Continue with Google</button>
                 <button>Continue with Github</button>
