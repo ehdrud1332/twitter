@@ -32,6 +32,18 @@ const Home = ({ userObj }) => {
         const { target : {value}} = event;
         setTweet(value);
     }
+
+    const onFileChange = (event) => {
+        //  es6 evnet 안에있는 target 안에있는 files을 상수화 한것.
+        // fileReader API 사용한다.
+        const {target: {files}} = event;
+        const theFile = files[0];
+        const reader = new FileReader();
+        reader.onloadend = (finishedEvent) => {
+            console.log(finishedEvent)
+        }
+        reader.readAsDataURL(theFile)
+    }
     return (
         <div>
             <form onSubmit={onSubmit}>
@@ -41,6 +53,11 @@ const Home = ({ userObj }) => {
                     type='text'
                     placeholder="What's on your mind"
                     maxLength={120}
+                />
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={onFileChange}
                 />
                 <input type='submit' value="twitter"/>
             </form>
