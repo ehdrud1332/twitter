@@ -2,7 +2,7 @@ import React from 'react';
 import {authService} from "../fbase";
 import { useHistory } from 'react-router-dom';
 
-export default () => {
+const Profile =  () => {
 
     const history = useHistory();
     const onLogoutClick = () => {
@@ -16,3 +16,5 @@ export default () => {
         </>
     )
 }
+
+export default Profile;

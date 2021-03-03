@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { authService, firebaseInstance } from "../fbase";
 
-export default () => {
+const Auth = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -85,3 +85,5 @@ export default () => {
         </div>
     )
 }
+
+export default Auth;

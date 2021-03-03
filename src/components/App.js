@@ -6,12 +6,14 @@ function App() {
 
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userObj, setUserObj] = useState(null);
 
   // 변화가 일어날때마다 stateChange가 일어날때마다 listen 하고 있다. ex) 로그인, 로그아웃, 회원가입 등등.
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if(user) {
         setIsLoggedIn(true);
+        setUserObj(user);
       } else {
         setIsLoggedIn(false)
       }
@@ -22,7 +24,7 @@ function App() {
 
   return (
       <>
-       {init ? <AppRouter isLoggedIn={isLoggedIn}/> : "Initializing"}
+       {init ? <AppRouter isLoggedIn={isLoggedIn} userObj={userObj}/> : "Initializing"}
       </>
   );
 }

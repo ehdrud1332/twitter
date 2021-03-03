@@ -1,34 +1,26 @@
 import React, {useState, useEffect} from 'react';
 import { dbService } from "../fbase";
 
-export default () => {
+const Home = ({ userObj }) => {
 
     const [tweet, setTweet] = useState("");
     const [tweets, setTweets] = useState([]);
 
-    const getTweets = async() => {
-        // state에 있는 각각의 documents.data()를 console.log 하고 있다.
-        const dbtTweets = await dbService.collection("tweets").get();
-        // 모든 이전 tweets에 대해 배열을 return 할건데 그 배열안에는 새로작성한 tweets & ...prev(그 이전의 것)
-        // set~~~ 을 쓸때 값 대신 함수를 전달 할 수 있다. 함수를 전달하면 react는 이전 값에 접근할 수 있게 해줌.
-        dbtTweets.forEach(document => {
-            const tweetsObject = {
-                ...document.data(),
-                id : document.id
-            }
-            setTweets((prev) => [tweetsObject, ...prev])
-        })
-    }
-
     useEffect(() => {
-        getTweets()
+        // useEffect안에 넣은 이방식은 리로드 하지 않아도 바로 view에 표시된다. 전 방식은 리로드 해줘야하는 고전 방식
+        // forEach 방식은 re-render 해야하는 불편함이 있다.
+        dbService.collection("tweets").onSnapshot((snapshot) => {
+            const tweetArray = snapshot.docs.map(doc => ({id: doc.id, ...doc.data(),}))
+            setTweets(tweetArray)
+        })
     }, [])
 
     const onSubmit = async (event) => {
         event.preventDefault();
         await dbService.collection("tweets").add({
-            tweet,
-            createAt: Date.now()
+            text: tweet,
+            createAt: Date.now(),
+            creatorId: userObj.uid
         });
         setTweet("");
     };
@@ -36,7 +28,6 @@ export default () => {
         const { target : {value}} = event;
         setTweet(value);
     }
-    console.log(tweets)
     return (
         <div>
             <form onSubmit={onSubmit}>
@@ -52,11 +43,13 @@ export default () => {
             <div>
                 {tweets.map(tweet =>
                     <div key={tweet.id}>
-                        <h4>{tweet.tweet}</h4>
+                        <h4>{tweet.text}</h4>
                     </div>
                 )}
             </div>
         </div>
     )
 }
+
+export default Home;
 
