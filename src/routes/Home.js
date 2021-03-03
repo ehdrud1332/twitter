@@ -45,6 +45,7 @@ const Home = ({ userObj }) => {
                 {tweets.map(tweet =>
                     <Tweet
                         key={tweet.id}
+                        // tweetObj를 제공했기 때문에 delete가 id를 기반으로 삭제를 할 수 있다
                         tweetObj={tweet}
                         isOwner={tweet.creatorId === userObj.uid}
                     />
