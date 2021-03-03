@@ -6,6 +6,7 @@ const Home = ({ userObj }) => {
     //여기서 onSubmit을 위한 state
     const [tweet, setTweet] = useState("");
     const [tweets, setTweets] = useState([]);
+    const [attachment, setAttachment] = useState();
 
     useEffect(() => {
         // useEffect안에 넣은 이방식은 리로드 하지 않아도 바로 view에 표시된다. 전 방식은 리로드 해줘야하는 고전 방식
@@ -40,10 +41,13 @@ const Home = ({ userObj }) => {
         const theFile = files[0];
         const reader = new FileReader();
         reader.onloadend = (finishedEvent) => {
-            console.log(finishedEvent)
-        }
+             const {currentTarget: {result}} = finishedEvent;
+             setAttachment(result);
+        };
         reader.readAsDataURL(theFile)
     }
+
+    const onClearAttachment = () => setAttachment(null)
     return (
         <div>
             <form onSubmit={onSubmit}>
@@ -59,7 +63,13 @@ const Home = ({ userObj }) => {
                     accept="image/*"
                     onChange={onFileChange}
                 />
-                <input type='submit' value="twitter"/>
+                <input type='submit' value="tweet"/>
+                {attachment &&
+                    <div>
+                        <img src={attachment} width='50px' height='50px'/>
+                        <button onClick={onClearAttachment}>Clear</button>
+                    </div>}
+
             </form>
             <div>
                 {tweets.map(tweet =>
