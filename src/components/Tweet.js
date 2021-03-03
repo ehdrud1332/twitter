@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {dbService} from "../fbase";
+import {dbService, storageService} from "../fbase";
 
 const Tweet = ({ tweetObj, isOwner }) => {
     // edit을 할 수 있거나 없게 도와주는 state
@@ -12,7 +12,8 @@ const Tweet = ({ tweetObj, isOwner }) => {
         if(ok) {
             // 삭제할 수 있는 있유는 documents(doc).id를 알고 있었기 때문.
             // collection안에 있는 documents id를 얻어낸 다음에 삭제하는 것.
-           await dbService.doc(`tweets/${tweetObj.id}`).delete()
+            await dbService.doc(`tweets/${tweetObj.id}`).delete();
+            await storageService.refFromURL(tweetObj.attachmentUrl).delete();
         }
     };
 
