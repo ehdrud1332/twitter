@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
+import { dbService } from "../fbase";
 
 export default () => {
 
     const [tweet, setTweet] = useState("");
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault();
+        await dbService.collection("tweets").add({
+            tweet,
+            createAt: Date.now()
+        });
+        setTweet("");  
     };
     const onChange = (event) => {
         const { target : {value}} = event;
