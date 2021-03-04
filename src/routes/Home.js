@@ -7,7 +7,7 @@ const Home = ({ userObj }) => {
     //여기서 onSubmit을 위한 state
     const [tweet, setTweet] = useState("");
     const [tweets, setTweets] = useState([]);
-    const [attachment, setAttachment] = useState();
+    const [attachment, setAttachment] = useState("");
 
     useEffect(() => {
         // useEffect안에 넣은 이방식은 리로드 하지 않아도 바로 view에 표시된다. 전 방식은 리로드 해줘야하는 고전 방식
