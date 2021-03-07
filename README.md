@@ -1,7 +1,7 @@
 ## 주요기능
 
 * React JS를 이용한 Twitter 기능 구현
-* Firebase API 를 이용한 다양한 코드 구현
+* Firebase API 를 이용한 CRUD 기능 구현
 * FileReader API 를 이용한 image Reader 기능 구현
 * Hook(useState, useEffect, useHistory etc..)을 활용한 코드 생성
 * 모바일 친화적 화면 구현
@@ -35,17 +35,51 @@ const onSocialClick = async (event) => {
 #### onSnapshot의 코드 구현
 * Hook 코드안에 onSnapshot 기능 넣기
 * forEach, onSnapshot 두 가지 방법을 구현 후 장단점 확인
-* onSnapsh
+* onSnapshot의 listenter 역할 확인
+* onSnapshot은 database에 무슨일이 있을때(listener) 알림을 받고 새로운 snapshot을 받을때 tweetArray를 생성 후 state에 배열을 넣는다.
 ~~~ts
 useEffect(() => {
-        // useEffect안에 넣은 이방식은 리로드 하지 않아도 바로 view에 표시된다. 전 방식은 리로드 해줘야하는 고전 방식
-        // forEach 방식은 re-render 해야하는 불편함이 있다.
-        // onSnapshot은 database에 무슨일이 있을때(listener) 알림을 받는다.
-        // 새로운 snapshot을 받을때 tweetArray를 생성한다.
-        // 그런 다음에 state에 배열을 집어 넣는다.
         dbService.collection("tweets").onSnapshot((snapshot) => {
             const tweetArray = snapshot.docs.map(doc => ({id: doc.id, ...doc.data(),}))
             setTweets(tweetArray)
         })
     }, [])
 ~~~
+
+#### fileReader API 코드 작성
+* ES6을 이용한 코드 생성
+* 파일은 읽은 후 DATA URL 저장
+~~~ts
+ const onFileChange = (event) => {
+        const {target: {files}} = event;
+        const theFile = files[0];
+        const reader = new FileReader();
+        reader.onloadend = (finishedEvent) => {
+            const {currentTarget: {result}} = finishedEvent;
+            setAttachment(result);
+        };
+        if (Boolean(theFile)) {
+            reader.readAsDataURL(theFile);
+        }
+    }
+~~~
+
+#### Delete 이해하기
+* id을 이용한 CRUD 활용법
+* delete 하는 방법에 대한 이해
+~~~ts
+   const onDeleteClick = async () => {
+        const ok = window.confirm("Are you sure you want to delete this tweet?")
+        if(ok) {
+            // 삭제할 수 있는 있유는 documents(doc).id를 알고 있었기 때문.
+            // collection안에 있는 documents id를 얻어낸 다음에 삭제하는 것.
+            await dbService.doc(`tweets/${tweetObj.id}`).delete();
+            await storageService.refFromURL(tweetObj.attachmentUrl).delete();
+        }
+    };
+~~~
+
+## To Do List
+
+- [ ] BackEnd에 대한 이해도 높이기
+- [ ] 다양한 API에 대한 영어 원문 이용법 공부하기 
