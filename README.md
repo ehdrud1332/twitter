@@ -17,7 +17,7 @@
 
 ## Study Note
 
-#### 소셜 로그인 구현 (Google, github)
+#### 1. 소셜 로그인 구현 (Google, github)
 ~~~ts
 const onSocialClick = async (event) => {
         const {target: {name}} = event;
@@ -32,7 +32,7 @@ const onSocialClick = async (event) => {
     }
 ~~~
 
-#### onSnapshot의 코드 구현
+#### 2. onSnapshot의 코드 구현
 * Hook 코드안에 onSnapshot 기능 넣기
 * forEach, onSnapshot 두 가지 방법을 구현 후 장단점 확인
 * onSnapshot의 listenter 역할 확인
@@ -46,7 +46,7 @@ useEffect(() => {
     }, [])
 ~~~
 
-#### fileReader API 코드 작성
+#### 3. fileReader API 코드 작성
 * ES6을 이용한 코드 생성
 * 파일은 읽은 후 DATA URL 저장
 ~~~ts
@@ -64,7 +64,7 @@ useEffect(() => {
     }
 ~~~
 
-#### Delete 이해하기
+#### 4. Delete 이해하기
 * id을 이용한 CRUD 활용법
 * delete 하는 방법에 대한 이해
 ~~~ts
