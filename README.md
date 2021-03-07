@@ -6,6 +6,18 @@
 * Hook(useState, useEffect, useHistory etc..)을 활용한 코드 생성
 * 모바일 친화적 화면 구현
 
+## 사용한 패키지
+~~~ts
+"packages": [
+"React"
+"React Hooks"
+"React Router"
+"Firebase"
+"Create React App"
+"Github Pages"
+]
+~~~
+
 ## 완성화면
 
 |Feature|Photo|Description|
