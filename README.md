@@ -1,5 +1,7 @@
 ## 주요기능
 
+Deploy URL : https://ehdrud1332.github.io/twitter/#/
+
 * React JS를 이용한 Twitter 기능 구현
 * Firebase API 를 이용한 CRUD 기능 구현
 * FileReader API 를 이용한 image Reader 기능 구현
